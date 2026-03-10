@@ -1,0 +1,113 @@
+algorithm : dreamer-v1
+operation :
+    save : False
+    log_dir : robot-c14
+    device : cpu
+
+environment :
+    benchmark : robot
+    camera_source : mock
+    serial_port : ""
+    camera_fps : 15
+    height : 64
+    width : 64
+    max_steps : 300
+
+    depth_min_m : 0.1
+    depth_max_m : 4.0
+
+    action_linear_limit : 0.35
+    action_angular_limit : 1.2
+
+    fallback_forward_speed : 0.10
+    fallback_turn_speed : 0.60
+    fallback_min_depth_m : 0.35
+
+robot :
+    commands :
+        - go to the orange ball
+        - go to the blue cube
+        - go to the green cone
+        - return to start
+
+parameters :
+    dreamer :
+        train_iterations : 1000
+        horizon_length : 5
+        batch_size : 32
+        batch_length : 30
+        collect_interval : 50
+        num_interaction_episodes : 1
+        seed_episodes : 5
+        num_evaluate : 3
+
+        kl_divergence_scale : 1
+        free_nats : 3
+        discount : 0.99
+        lambda_ : 0.95
+
+        use_continue_flag : False
+        actor_learning_rate : 0.00008
+        critic_learning_rate : 0.00008
+        model_learning_rate : 0.0003
+        grad_norm_type : 2
+        clip_grad : 100
+
+        deterministic_size : 200
+        stochastic_size : 30
+        embedded_state_size : 128
+        goal_size : 32
+
+        buffer :
+            capacity : 200000
+
+        encoder :
+            backbone : mobilenet_v2
+            activation : ReLU
+
+        decoder :
+            enabled : False
+            hidden_size : 512
+            num_layers : 3
+            activation : ELU
+
+        rssm :
+            recurrent_model :
+                hidden_size : 200
+                activation : ELU
+
+            transition_model :
+                hidden_size : 200
+                num_layers : 2
+                activation : ELU
+                min_std : 0.1
+
+            representation_model :
+                hidden_size : 200
+                num_layers : 2
+                activation : ELU
+                min_std : 0.1
+
+        reward :
+            hidden_size : 400
+            num_layers : 2
+            activation : ELU
+
+        continue_ :
+            hidden_size : 400
+            num_layers : 3
+            activation : ELU
+
+        agent :
+            actor :
+                hidden_size : 400
+                min_std : 0.0001
+                init_std : 5.
+                mean_scale : 5
+                activation : ELU
+                num_layers : 2
+
+            critic :
+                hidden_size : 400
+                activation : ELU
+                num_layers : 3

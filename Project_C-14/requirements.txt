@@ -1,0 +1,11 @@
+attrdict==2.0.1
+numpy==1.21.6
+PyYAML==6.0.1
+torch==2.0.1
+torchvision==0.15.2
+onnx==1.14.1
+tensorboard==2.8.0
+protobuf==3.20.3
+# Optional runtime dependencies for robot hardware:
+# depthai>=2.22.0
+pyserial>=3.5
