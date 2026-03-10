@@ -43,6 +43,7 @@ class Encoder(nn.Module):
         self.config = config.parameters.dreamer.encoder
         self.observation_shape = observation_shape
         self.embedded_state_size = config.parameters.dreamer.embedded_state_size
+        self.flip_hw = bool(_cfg_get(self.config, "flip_hw", False))
 
         input_channels = int(self.observation_shape[0])
         self.backbone, feature_size = self._build_backbone(input_channels)
@@ -98,6 +99,9 @@ class Encoder(nn.Module):
             batch_with_horizon_shape = (1,)
 
         x = x.reshape(-1, *input_shape)
+        if self.flip_hw:
+            # Rotate 180 degrees (equivalent to flipping H and W).
+            x = torch.flip(x, dims=[-1, -2])
         x = self.backbone(x)
         x = self.pool(x).flatten(1)
         x = self.projection(x)

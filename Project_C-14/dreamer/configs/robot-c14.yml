@@ -63,6 +63,7 @@ parameters :
 
         encoder :
             backbone : mobilenet_v2
+            flip_hw : true
             activation : ReLU
 
         decoder :
